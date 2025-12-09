@@ -47,7 +47,6 @@
   Due to browser security restrictions, address-bar protocol links cannot automatically open the Mandu extension popup. 
   Click the button above to continue.
 </p>
-
 <script>
 const params = new URLSearchParams(window.location.search);
 const protocolUrl = params.get("url"); // web+mandu://127.0.0.1:2112
@@ -58,8 +57,17 @@ document.getElementById("connectBtn").addEventListener("click", () => {
         if (match) {
             const ip = match[1];
             const port = match[2];
-            // You can alert, copy, or instruct user to open extension
-            alert(`Mandu link detected:\nServer IP: ${ip}\nPort: ${port}\nNow open your Mandu extension popup.`);
+
+            // Send message to extension background script
+            if (window.chrome && chrome.runtime) {
+                chrome.runtime.sendMessage({
+                    type: "openPopup",
+                    ip: ip,
+                    port: port
+                });
+            } else {
+                alert(`Mandu link detected:\nServer IP: ${ip}\nPort: ${port}\nPlease open the extension manually.`);
+            }
         } else {
             alert("Invalid Mandu URL.");
         }
