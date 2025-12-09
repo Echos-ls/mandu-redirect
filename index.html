@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Mandu Redirect</title>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const protocolUrl = params.get('url'); // web+mandu://127.0.0.1:2112
+  if (protocolUrl) {
+    const match = protocolUrl.match(/^web\+mandu:\/\/([^:]+):(\d+)/);
+    if (match) {
+      const ip = match[1];
+      const port = match[2];
+      // Optional: you can show instructions or redirect somewhere
+      alert(`Mandu link detected: ${ip}:${port}`);
+      // Or redirect to your online dashboard page
+      // window.location.href = `https://yourdashboard.example.com/?ip=${ip}&port=${port}`;
+    }
+  }
+</script>
+</head>
+<body>
+<p>Redirecting…</p>
+</body>
+</html>
